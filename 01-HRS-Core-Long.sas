@@ -12,7 +12,6 @@ libname libin "C:\Users\agalecki\Dropbox (University of Michigan)\DDBC HRS Proje
 filename hrs_fcmp "C:\Users\agalecki\Documents\GitHub\HRS-FCMP";
 
 
-
 %macro HRS_Core_Long(
     HRS_libin =,
     HRS_yrs   =, 
@@ -23,22 +22,22 @@ filename hrs_fcmp "C:\Users\agalecki\Documents\GitHub\HRS-FCMP";
 );
 
 filename _macros "&HRS_Core_Long_path/macros";
-%include _macros(HRS_Core_Long_setup, augment_years);
+%include _macros(HRS_Core_Long_setup, augment_info);
+%include _macros(create_data_template);
+
 %HRS_Core_Long_setup;
-
-
-%augment_years(HRS_yrs); /* Dataset _hrsyears is created */
 
 /* Add info to SAS info datasets */
 %include _macros(augment_info);
 %augment_info;
-
+%create_data_template;
 
 %mend HRS_Core_Long;
 
 %HRS_Core_Long(
     HRS_libin = libin,       /* libref for SAS library */
     HRS_yrs = 1992-2020,
+    vgrps = subhh$ why,
     HRS_FCMP = hrs_fcmp,     /* fileref to HRS_FCMP folder */
     FCMP_member = DLfunction
 )
