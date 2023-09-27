@@ -10,10 +10,15 @@ libnmame libout "C:\temp";
 
 %let fcmp_member = DLFUNCTION;
 
+
+libname fcmp_lib "&HRS_FCMP_path\&fcmp_member-FCMP\cmplib";
+
+
+
 /*--- NO changess below this line ---*/
 
-%let fcmp_member_path = &HRS_FCMP_path\&fcmp_member-FCMP;
+%let fcmp_member_path = &HRS_FCMP_path
 filename member "&fcmp_member_path";
 
 
-options
+options cmplib = 
