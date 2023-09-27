@@ -1,24 +1,22 @@
-/*--- Define SAS library with HRS Core data ---*/
 
-libname hrs_core "C:\Users\agalecki\Dropbox (University of Michigan)\DDBC HRS Project\scrambled data";
+options nocenter mprint nodate;
 
-libnmame libout "C:\temp";
-%let dtout = libout.hrs_long;
+/*--- Provide path to HRS-Core-Long (current) folder ---*/
 
-/*--- FCMP  */
-%let HRS_FCMP_path = C:\Users\agalecki\Documents\GitHub\HRS-FCMP;
+%let HRS_Core_Long_path = .;   
 
-%let fcmp_member = DLFUNCTION;
-
-
-libname fcmp_lib "&HRS_FCMP_path\&fcmp_member-FCMP\cmplib";
+filename _setup "&HRS_Core_Long_path\_setup.sas";
+%include _setup;
 
 
 
-/*--- NO changess below this line ---*/
+%macro HRS_Core_Long(
+    HRS_libin =,
+    HRS_yrs = 1992-2030, 
+    vgrps = ?,
+    HRS_fcmp =
 
-%let fcmp_member_path = &HRS_FCMP_path
-filename member "&fcmp_member_path";
 
+%mend  HRS_Core_Long;
 
-options cmplib = 
+%HRS_Core_Long(
