@@ -47,14 +47,39 @@ data _hrsinfo_vout(keep = vgrp vout_nm ctype len ctypelen vout_lbl);
   end;
 run;
 
+/* Cartesian product of years by vgrp */
+
+data xprod_yr_by_vgrps; /* Cartesian product of years by vgrp */
+ set _hrsinfo_libin;
+ label fcmp_member = "FCMP library member name";
+ label vgrp  =  "Group variable name ";
+ label ctype =  "Group variable type";
+ label cnt_vin = "Number of input variables in a given vgrp";
+ ;
+ length  vin_nms $ 2000;
+  length vinz_nms $ 2000;
+ do i =1 to n;
+  set _hrsinfo_vgrps point=i nobs =n;
+  vin_nms = dispatch_vin(year, vgrp);
+  vinz_nms = strip(vin_nms);
+  cnt_vinz = countw(vin_nms);
+  if cnt_vinz = 0 then do;
+   if ctype ="$" then vinz_nms = "_CHARZZZ_"; else vinz_nms = "_ZZZ_"; /* Artificial vars */
+   cnt_vinz = 1;
+  end;
+  output;
+ end;
+ *drop cnt_vout;
+run;
 
 
 
 ods html file="x.html";
-proc print data = &fcmp_member._VGRPS;
+proc print data = _hrsinfo_vgrps ;
+
 run;
 
-proc print data = _hrsinfo_vout;
+proc print data = xprod_yr_by_vgrps;
 run;
 
 
